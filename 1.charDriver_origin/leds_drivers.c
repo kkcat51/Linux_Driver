@@ -25,6 +25,7 @@ static long leds_ioctl(struct file* file,unsigned int cmd,unsigned long arg){
 	printk("cmd is %d,arg is %d\n",cmd,arg);
 	if(cmd>1 || arg>1){
 		printk("input error\n");
+		return -1;
 	}
 	gpio_set_value(EXYNOS4_GPL2(0),cmd);
 	return 0;
@@ -44,8 +45,9 @@ static int leds_init(){
 		printk("gpio request failed!\n");
 	s3c_gpio_cfgpin(EXYNOS4_GPL2(0),S3C_GPIO_OUTPUT);
 	gpio_set_value(EXYNOS4_GPL2(0),0);
+	return 0;
 }
-static int leds_exit(){
+static void leds_exit(){
 	unregister_chrdev(major,DEVICE);
 	gpio_free(EXYNOS4_GPL2(0));
 	printk("unregister chrdev");
