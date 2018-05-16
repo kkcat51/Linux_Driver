@@ -47,6 +47,7 @@ static int leds_init(){
 }
 static int leds_exit(){
 	unregister_chrdev(major,DEVICE);
+	gpio_free(EXYNOS4_GPL2(0));
 	printk("unregister chrdev");
 }
 module_init(leds_init);
