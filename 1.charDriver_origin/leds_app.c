@@ -6,7 +6,7 @@
 #include <sys/ioctl.h>
 
 int main(){
-	int fd = open("leds",O_RDWR|O_NDELAY);
+	int fd = open("/dev/leds",O_RDWR|O_NDELAY);
 	if(fd<0)
 		printf("leds open fail\n");
 	else{
