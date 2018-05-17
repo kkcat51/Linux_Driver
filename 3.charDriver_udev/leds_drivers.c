@@ -57,7 +57,7 @@ static int leds_init(){
 		printk("create class failed\n");
 		return -1;
 	}
-	device_create(my_class,NULL,devId,NULL,"leds""%d",MINOR(devId));
+	device_create(my_class,NULL,devId,NULL,"leds");
 
 	int ret = gpio_request(EXYNOS4_GPL2(0),"LED");
 	if(ret<0){

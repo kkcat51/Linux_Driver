@@ -71,8 +71,8 @@ static int leds_init(){
 static void leds_exit(){
 	cdev_del(my_cdev);
 
-	device_destoy(my_class,devId);
-	class_destoy(my_class);
+	device_destroy(my_class,devId);
+	class_destroy(my_class);
 
 	gpio_free(EXYNOS4_GPL2(0));
 	printk("cdev_del \n");
