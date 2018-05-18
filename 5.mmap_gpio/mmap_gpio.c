@@ -4,7 +4,7 @@
 #include <sys/mman.h>
 
 int main(){
-	int fd;
+	int fd=0;
 	void *start = NULL,*reg = NULL;
 	fd = open("/dev/mem",O_RDWR);
 	if(fd<0){
