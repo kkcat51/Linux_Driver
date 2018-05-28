@@ -84,7 +84,7 @@ static int keys_init(){
 		printk("irq request failed");
 		return -EFAULT;
 	}
-
+	init_waitqueue_head(&wq); 
 	return 0;
 }
 static void keys_exit(){
