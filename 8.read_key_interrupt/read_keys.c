@@ -20,7 +20,7 @@ int main()
 	printf("APP open %s success!\n",read_key);
 	while(1){
 		read(fd,buffer,sizeof(buffer));
-		printf("button %d is clicked",buffer[0]);
+		printf("button %d is clicked\n",(int)buffer[0]);
 	}
 	
 	close(fd);
