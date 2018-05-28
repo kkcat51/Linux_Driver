@@ -56,7 +56,7 @@ static irqreturn_t eint9_interrupt(int irq,void *dev_id)
 static irqreturn_t eint10_interrupt(int irq,void *dev_id)
 {
 	printk("eint10_interrupt \n");
-	buffer[0] = 9;
+	buffer[0] = 10;
 	buffer[1] = 1;
 	have_data = true;
 	wake_up_interruptible(&wq);
