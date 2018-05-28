@@ -26,11 +26,6 @@ static char buffer[2];
 
 static bool have_data = false;
 
-static int key_gpios[] = {
-	EXYNOS4_GPX1(1),
-	EXYNOS4_GPX1(2),
-};
-
 static int keys_open(struct inode* inode,struct file* file){
 	printk("key open\n");
 	return 0;
@@ -80,10 +75,15 @@ static struct miscdevice misc = {
 static int keys_init(){
 
 	misc_register(&misc);
-
+	int ret1,ret2;	
+	
 	//申请中断,无需配置GPIO
-	request_irq(IRQ_EINT(9),eint9_interrupt,IRQ_TYPE_EDGE_FALLING,"my_eint9",device_name);
-	request_irq(IRQ_EINT(10),eint10_interrupt,IRQ_TYPE_EDGE_FALLING,"my_eint10",device_name);
+	ret1 = request_irq(IRQ_EINT(9),eint9_interrupt,IRQ_TYPE_EDGE_FALLING,"my_eint9",device_name);
+	ret2 = request_irq(IRQ_EINT(10),eint10_interrupt,IRQ_TYPE_EDGE_FALLING,"my_eint10",device_name);
+	if(ret1<0 || ret2<0){
+		printk("irq request failed");
+		return -EFAULT;
+	}
 
 	return 0;
 }
