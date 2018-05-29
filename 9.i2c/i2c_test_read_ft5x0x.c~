@@ -9,15 +9,14 @@
 
 #include <linux/regulator/consumer.h>
 #include <mach/gpio.h>
+#include <mach/irqs.h>
 #include <plat/gpio-cfg.h>
 #include <plat/iic.h>
 #include <plat/ft5x0x_touch.h>
 
-static struct i2c_board_info i2c_devs3[] __initdata = {
-	{
-		I2C_BOARD_INFO("i2c_test", 0x70>>1),
-		.irq = IRQ_EINT(4),
-	},
+static struct i2c_board_info i2c_devs3  = {
+	I2C_BOARD_INFO("i2c_test", 0x70>>1),
+	.irq = IRQ_EINT(4),	
 };
 
 static int i2c_tes_read_reg(struct i2c_client *client,u8 addr, u8 *pdata) {
