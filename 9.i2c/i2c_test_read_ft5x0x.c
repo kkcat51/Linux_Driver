@@ -96,7 +96,7 @@ static void i2c_io_init(void)
 {
 	int ret;
 	ret = gpio_request(EXYNOS4_GPL0(2), "TP1_EN");
-	if (ret) {
+	if (ret<0) {
 		printk(KERN_ERR "failed to request TP1_EN for "
 				"I2C control\n");
 		//return err;
@@ -107,10 +107,10 @@ static void i2c_io_init(void)
 	mdelay(5);
 	
 	ret = gpio_request(EXYNOS4_GPX0(3), "GPX0_3");
-	if (ret) {
+	if (ret<0) {
 		gpio_free(EXYNOS4_GPX0(3));
 		ret = gpio_request(EXYNOS4_GPX0(3), "GPX0_3");
-		if(ret)
+		if(ret<0)
 		{
 			printk("ft5xox: Failed to request GPX0_3 \n");
 		}
@@ -131,7 +131,7 @@ static int __init i2c_test_init(void)
 
 	struct i2c_adapter *i2c_adap;  
   
-    i2c_adap = i2c_get_adapter(3);//这里要实验的EEPROM是挂接在第0条I2C总线上的，所以这里的参数是0  
+    i2c_adap = i2c_get_adapter(3);
     i2c_client = i2c_new_device(i2c_adap, &i2c_devs3);  
     i2c_put_adapter(i2c_adap);  
 
