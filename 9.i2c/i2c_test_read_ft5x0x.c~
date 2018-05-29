@@ -100,10 +100,10 @@ static void i2c_io_init(void)
 	if (ret) {
 		gpio_free(EXYNOS4_GPX0(3));
 		ret = gpio_request(EXYNOS4_GPX0(3), "GPX0_3");
-		if(ret)
-		{
-			printk("ft5xox: Failed to request GPX0_3 \n");
-		}
+	if(ret)
+	{
+		printk("ft5xox: Failed to request GPX0_3 \n");
+	}
 	}
 	gpio_direction_output(EXYNOS4_GPX0(3), 0);
 	mdelay(200);
