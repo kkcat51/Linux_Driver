@@ -3,6 +3,7 @@ cmd_/home/topeet/linux_driver/Linux_Driver/9.i2c/i2c_test_read_ft5x0x.o := /usr/
 source_/home/topeet/linux_driver/Linux_Driver/9.i2c/i2c_test_read_ft5x0x.o := /home/topeet/linux_driver/Linux_Driver/9.i2c/i2c_test_read_ft5x0x.c
 
 deps_/home/topeet/linux_driver/Linux_Driver/9.i2c/i2c_test_read_ft5x0x.o := \
+    $(wildcard include/config/has/earlysuspend.h) \
   include/linux/kernel.h \
     $(wildcard include/config/lbdaf.h) \
     $(wildcard include/config/preempt/voluntary.h) \
@@ -545,18 +546,11 @@ deps_/home/topeet/linux_driver/Linux_Driver/9.i2c/i2c_test_read_ft5x0x.o := \
   include/linux/platform_device.h \
     $(wildcard include/config/suspend.h) \
     $(wildcard include/config/hibernate/callbacks.h) \
+  include/linux/earlysuspend.h \
   include/linux/regulator/consumer.h \
     $(wildcard include/config/regulator.h) \
-  arch/arm/mach-exynos/include/mach/irqs.h \
-  arch/arm/plat-s5p/include/plat/irqs.h \
-  arch/arm/mach-exynos/include/mach/irqs-exynos4.h \
-    $(wildcard include/config/tc4/gb.h) \
-    $(wildcard include/config/cpu/exynos4210.h) \
-    $(wildcard include/config/s3c/dev/adc.h) \
-    $(wildcard include/config/cpu/exynos4412.h) \
   arch/arm/plat-samsung/include/plat/gpio-cfg.h \
     $(wildcard include/config/s5p/gpio/int.h) \
-  arch/arm/plat-samsung/include/plat/iic.h \
   arch/arm/plat-samsung/include/plat/ft5x0x_touch.h \
 
 /home/topeet/linux_driver/Linux_Driver/9.i2c/i2c_test_read_ft5x0x.o: $(deps_/home/topeet/linux_driver/Linux_Driver/9.i2c/i2c_test_read_ft5x0x.o)

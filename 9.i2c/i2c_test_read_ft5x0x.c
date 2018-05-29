@@ -6,30 +6,13 @@
 #include <linux/slab.h>
 #include <linux/gpio.h>
 #include <linux/platform_device.h>
-
+#ifdef CONFIG_HAS_EARLYSUSPEND
+#include <linux/earlysuspend.h>
+#endif
 #include <linux/regulator/consumer.h>
 #include <mach/gpio.h>
-#include <mach/irqs.h>
 #include <plat/gpio-cfg.h>
-#include <plat/iic.h>
 #include <plat/ft5x0x_touch.h>
-
-/*static struct i2c_board_info i2c_devs3  = {
-	I2C_BOARD_INFO("i2c_test", 0x70>>1),
-	.irq = IRQ_EINT(4),	
-};*/
-static struct i2c_board_info i2c_devs3[] __initdata = {
-
-	{
-		I2C_BOARD_INFO("ft5x0x_ts", 0x70>>1),
-		.irq = IRQ_EINT(4),
-	},
-	{
-        I2C_BOARD_INFO("i2c_test", 0x70>>1),
-    },
-};
-
-static struct i2c_client *i2c_client;  
 
 static int i2c_tes_read_reg(struct i2c_client *client,u8 addr, u8 *pdata) {
 	u8 buf1[4] = { 0 };
@@ -51,7 +34,6 @@ static int i2c_tes_read_reg(struct i2c_client *client,u8 addr, u8 *pdata) {
 	int ret;
 	buf1[0] = addr;
 	ret = i2c_transfer(client->adapter, msgs, 2);
-	printk("i2c address 0x%02x \n",client->addr);
 	if (ret < 0) {
 		pr_err("read reg (0x%02x) error, %d\n", addr, ret);
 	} else {
@@ -101,12 +83,11 @@ static struct i2c_driver i2c_test_driver = {
 	},
 };
 
-//i2c设备上电初始化
 static void i2c_io_init(void)
 {
 	int ret;
 	ret = gpio_request(EXYNOS4_GPL0(2), "TP1_EN");
-	if (ret<0) {
+	if (ret) {
 		printk(KERN_ERR "failed to request TP1_EN for "
 				"I2C control\n");
 		//return err;
@@ -117,13 +98,13 @@ static void i2c_io_init(void)
 	mdelay(5);
 	
 	ret = gpio_request(EXYNOS4_GPX0(3), "GPX0_3");
-	if (ret<0) {
+	if (ret) {
 		gpio_free(EXYNOS4_GPX0(3));
 		ret = gpio_request(EXYNOS4_GPX0(3), "GPX0_3");
-		if(ret<0)
-		{
-			printk("ft5xox: Failed to request GPX0_3 \n");
-		}
+	if(ret)
+	{
+		printk("ft5xox: Failed to request GPX0_3 \n");
+	}
 	}
 	gpio_direction_output(EXYNOS4_GPX0(3), 0);
 	mdelay(200);
@@ -136,33 +117,21 @@ static void i2c_io_init(void)
 static int __init i2c_test_init(void)
 {
 	printk("==%s:\n", __FUNCTION__);
-
 	i2c_io_init();
-
-	//struct i2c_adapter *i2c_adap;  
-  
-    //i2c_adap = i2c_get_adapter(3);
-    //i2c_client = i2c_new_device(i2c_adap, &i2c_devs3);  
-    //i2c_put_adapter(i2c_adap);  
-
-	i2c_register_board_info(3, i2c_devs3, ARRAY_SIZE(i2c_devs3));
-
 	printk("==%s:\n", __FUNCTION__);
 	return i2c_add_driver(&i2c_test_driver);
 }
 static void __exit i2c_test_exit(void)
 {
 	printk("==%s:\n", __FUNCTION__);
-	//i2c_unregister_device(i2c_client);  
 	i2c_del_driver(&i2c_test_driver);
-	printk("==%s:\n", __FUNCTION__);
 }
 
 
-module_init(i2c_test_init);
+late_initcall(i2c_test_init);
 module_exit(i2c_test_exit);
 
 
-MODULE_AUTHOR("KK");
-MODULE_DESCRIPTION("i2c_test");
+MODULE_AUTHOR("xunwei_rty");
+MODULE_DESCRIPTION("TsI2CTest");
 MODULE_LICENSE("GPL");
