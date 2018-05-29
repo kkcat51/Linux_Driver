@@ -9,8 +9,17 @@
 
 #include <linux/regulator/consumer.h>
 #include <mach/gpio.h>
+#include <mach/irqs.h>
 #include <plat/gpio-cfg.h>
+#include <plat/iic.h>
 #include <plat/ft5x0x_touch.h>
+
+static struct i2c_board_info i2c_devs3[] __initdata = {
+	{
+		I2C_BOARD_INFO("i2c_test", 0x70>>1),
+		.irq = IRQ_EINT(4),
+	},
+};
 
 static int i2c_tes_read_reg(struct i2c_client *client,u8 addr, u8 *pdata) {
 	u8 buf1[4] = { 0 };
@@ -116,7 +125,12 @@ static void i2c_io_init(void)
 static int __init i2c_test_init(void)
 {
 	printk("==%s:\n", __FUNCTION__);
+
 	i2c_io_init();
+
+	s3c_i2c3_set_platdata(NULL);
+	i2c_register_board_info(3, i2c_devs3, ARRAY_SIZE(i2c_devs3));
+
 	printk("==%s:\n", __FUNCTION__);
 	return i2c_add_driver(&i2c_test_driver);
 }
