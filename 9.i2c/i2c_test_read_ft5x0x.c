@@ -14,9 +14,19 @@
 #include <plat/iic.h>
 #include <plat/ft5x0x_touch.h>
 
-static struct i2c_board_info i2c_devs3  = {
+/*static struct i2c_board_info i2c_devs3  = {
 	I2C_BOARD_INFO("i2c_test", 0x70>>1),
 	.irq = IRQ_EINT(4),	
+};*/
+static struct i2c_board_info i2c_devs3[] __initdata = {
+
+	{
+		I2C_BOARD_INFO("ft5x0x_ts", 0x70>>1),
+		.irq = IRQ_EINT(4),
+	},
+	{
+        I2C_BOARD_INFO("i2c_test", 0x70>>1),
+    },
 };
 
 static struct i2c_client *i2c_client;  
@@ -129,12 +139,13 @@ static int __init i2c_test_init(void)
 
 	i2c_io_init();
 
-	struct i2c_adapter *i2c_adap;  
+	//struct i2c_adapter *i2c_adap;  
   
-    i2c_adap = i2c_get_adapter(3);
-    i2c_client = i2c_new_device(i2c_adap, &i2c_devs3);  
-    i2c_put_adapter(i2c_adap);  
+    //i2c_adap = i2c_get_adapter(3);
+    //i2c_client = i2c_new_device(i2c_adap, &i2c_devs3);  
+    //i2c_put_adapter(i2c_adap);  
 
+	i2c_register_board_info(3, i2c_devs3, ARRAY_SIZE(i2c_devs3));
 
 	printk("==%s:\n", __FUNCTION__);
 	return i2c_add_driver(&i2c_test_driver);
@@ -142,7 +153,7 @@ static int __init i2c_test_init(void)
 static void __exit i2c_test_exit(void)
 {
 	printk("==%s:\n", __FUNCTION__);
-	i2c_unregister_device(i2c_client);  
+	//i2c_unregister_device(i2c_client);  
 	i2c_del_driver(&i2c_test_driver);
 	printk("==%s:\n", __FUNCTION__);
 }
