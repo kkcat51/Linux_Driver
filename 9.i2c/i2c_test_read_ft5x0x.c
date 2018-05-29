@@ -41,6 +41,7 @@ static int i2c_tes_read_reg(struct i2c_client *client,u8 addr, u8 *pdata) {
 	int ret;
 	buf1[0] = addr;
 	ret = i2c_transfer(client->adapter, msgs, 2);
+	printk("i2c address 0x%02x \n",client->addr);
 	if (ret < 0) {
 		pr_err("read reg (0x%02x) error, %d\n", addr, ret);
 	} else {

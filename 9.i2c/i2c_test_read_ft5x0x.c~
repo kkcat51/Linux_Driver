@@ -19,6 +19,8 @@ static struct i2c_board_info i2c_devs3  = {
 	.irq = IRQ_EINT(4),	
 };
 
+static struct i2c_client *i2c_client;  
+
 static int i2c_tes_read_reg(struct i2c_client *client,u8 addr, u8 *pdata) {
 	u8 buf1[4] = { 0 };
 	u8 buf2[4] = { 0 };
@@ -126,8 +128,12 @@ static int __init i2c_test_init(void)
 
 	i2c_io_init();
 
-	s3c_i2c3_set_platdata(NULL);
-	i2c_register_board_info(3, i2c_devs3, ARRAY_SIZE(i2c_devs3));
+	struct i2c_adapter *i2c_adap;  
+  
+    i2c_adap = i2c_get_adapter(3);//这里要实验的EEPROM是挂接在第0条I2C总线上的，所以这里的参数是0  
+    i2c_client = i2c_new_device(i2c_adap, &i2c_devs3);  
+    i2c_put_adapter(i2c_adap);  
+
 
 	printk("==%s:\n", __FUNCTION__);
 	return i2c_add_driver(&i2c_test_driver);
@@ -135,6 +141,7 @@ static int __init i2c_test_init(void)
 static void __exit i2c_test_exit(void)
 {
 	printk("==%s:\n", __FUNCTION__);
+	i2c_unregister_device(i2c_client);  
 	i2c_del_driver(&i2c_test_driver);
 	printk("==%s:\n", __FUNCTION__);
 }
@@ -144,6 +151,6 @@ module_init(i2c_test_init);
 module_exit(i2c_test_exit);
 
 
-MODULE_AUTHOR("xunwei_rty");
-MODULE_DESCRIPTION("TsI2CTest");
+MODULE_AUTHOR("KK");
+MODULE_DESCRIPTION("i2c_test");
 MODULE_LICENSE("GPL");
