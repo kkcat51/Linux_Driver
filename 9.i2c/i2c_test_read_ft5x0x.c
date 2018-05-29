@@ -19,13 +19,13 @@ static int i2c_tes_read_reg(struct i2c_client *client,u8 addr, u8 *pdata) {
 	u8 buf2[4] = { 0 };
 	struct i2c_msg msgs[] = {
 		{
-			.addr	= client->addr,	//0x38
+			.addr	= 0x38,	//0x38
 			.flags	= 0,	//写
 			.len	= 1,	//要写的数据的长度
 			.buf	= buf1,
 		},
 		{
-			.addr	= client->addr,
+			.addr	= 0x38,
 			.flags	= I2C_M_RD,
 			.len	= 1,
 			.buf	= buf2,
