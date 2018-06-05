@@ -48,6 +48,7 @@ static irqreturn_t eint10_interrupt(int irq,void *dev_id)
 	printk("eint10_interrupt \n");
 	buffer[0] = 10;
 	buffer[1] = 1;
+	tasklet_schedule(&key_tasklet);
 	return IRQ_HANDLED;
 }
 

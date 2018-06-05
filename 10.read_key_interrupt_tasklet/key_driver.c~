@@ -21,11 +21,9 @@ char* device_name = "keys";
 
 static char buffer[2];
 
-const int data = 123;
-
 /* 定义 tasklet 和底半部函数并关联 */
 void key_tasklet_func(unsigned long data);
-DECLARE_TASKLET(key_tasklet, key_tasklet_func, data);
+DECLARE_TASKLET(key_tasklet, key_tasklet_func, 0);
 
 
 //tasklet处理函数底半部
