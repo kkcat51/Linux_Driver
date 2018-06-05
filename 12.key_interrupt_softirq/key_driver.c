@@ -14,7 +14,7 @@
 #include <linux/irq.h>
 #include <linux/interrupt.h>
 
-MODULE_LICENSE("Dual BSD/GPL");
+MODULE_LICENSE("GPL");
 MODULE_AUTHOR("kk");
 
 char* device_name = "keys";

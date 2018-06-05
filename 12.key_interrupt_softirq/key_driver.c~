@@ -36,7 +36,7 @@ static irqreturn_t eint9_interrupt(int irq,void *dev_id)
 	printk("eint9_interrupt \n");
 	buffer[0] = 9;
 	buffer[1] = 1;
-	raise_softirq(123,key_softirq_func);
+	raise_softirq(123);
 	return IRQ_HANDLED;
 }
 
@@ -46,14 +46,14 @@ static irqreturn_t eint10_interrupt(int irq,void *dev_id)
 	printk("eint10_interrupt \n");
 	buffer[0] = 10;
 	buffer[1] = 1;
-	raise_softirq(123,key_softirq_func);
+	raise_softirq(123);
 	return IRQ_HANDLED;
 }
 
 
 static int keys_init(){
 
-	open_softirq(123);//注册软中断
+	open_softirq(123,key_softirq_func);//注册软中断
 	int ret1,ret2;	
 	
 	//申请中断,无需配置GPIO
