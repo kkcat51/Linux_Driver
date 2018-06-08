@@ -70,12 +70,14 @@ static int read_test(unsigned char *buffer, int len)
 }
 
 void ad7490_test(){
-	short cmd = 0x833;
-	write_test(&cmd,2);
-	short ans = 0;
-	read_test(&ans,2);
-	printk("ad value is %d\n",ans);
-	
+	int i = 0;
+	for(i=0;i<100000;i++){
+		short cmd = 0x833;
+		write_test(&cmd,2);
+		short ans = 0;
+		read_test(&ans,2);
+		printk("ad value is %d\n",ans);
+	}	
 }
 
 static int __devinit ad7490_probe(struct spi_device *spi)

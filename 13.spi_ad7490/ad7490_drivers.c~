@@ -72,7 +72,7 @@ static int read_test(unsigned char *buffer, int len)
 void ad7490_test(){
 	short cmd = 0x833;
 	write_test(&cmd,2);
-	short ans = 0'
+	short ans = 0;
 	read_test(&ans,2);
 	printk("ad value is %d\n",ans);
 	
