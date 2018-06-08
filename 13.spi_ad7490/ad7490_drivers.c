@@ -37,7 +37,7 @@ static int spi_read_write(struct spi_device *spi, u8 * buf, u32 len)
 
  t.tx_buf = buf;
  t.rx_buf = buf;
- t.len = (len + 3) / 4;
+ t.len = len;
 
  spi_message_add_tail(&t, &m);
 
@@ -99,7 +99,7 @@ static int read_test(unsigned char *buffer, int len)
 
 void ad7490_test(){
 	int i = 0;
-	for(i=0;i<100000;i++){
+	for(i=0;i<100;i++){
 		//short cmd = 0x8370;
 		//write_test(&cmd,2);
 		//short ans = 0;
