@@ -37,7 +37,7 @@ static int spi_read_write(struct spi_device *spi, u8 * buf, u32 len)
 
  t.tx_buf = buf;
  t.rx_buf = buf;
- t.len = (len + 3) / 4;
+ t.len = len;
 
  spi_message_add_tail(&t, &m);
 

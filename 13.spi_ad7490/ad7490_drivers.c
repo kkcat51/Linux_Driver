@@ -100,12 +100,12 @@ static int read_test(unsigned char *buffer, int len)
 void ad7490_test(){
 	int i = 0;
 	for(i=0;i<100;i++){
-		//short cmd = 0x8370;
-		//write_test(&cmd,2);
-		//short ans = 0;
-		//read_test(&ans,2);
-		//printk("ad value is %d\n",ans);
-	    u8 command[2];
+		short cmd = 0x8370;
+		write_test(&cmd,2);
+		short ans = 0;
+		read_test(&ans,2);
+		printk("ad value is %d\n",ans);
+	    /*u8 command[2];
 		int i,ret;
 		for (i = 0; i < 2; i++) {
    			command[1] = 0x83 ;//add channel request to 'conctrl'
@@ -116,7 +116,7 @@ void ad7490_test(){
   		}
 		int value;
 		value = ((command[1] & 0xf) << 8) | command[0];
-		printk("ad value is %d \n",value);
+		printk("ad value is %d \n",value);*/
 
 	}	
 }
