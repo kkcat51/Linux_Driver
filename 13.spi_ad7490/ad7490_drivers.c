@@ -19,6 +19,34 @@ MODULE_AUTHOR("kk");
 
 struct spi_device *my_spi;
 
+static inline int spi_nor_setup(struct spi_device *spi, u8 bst_len)
+{
+ 	spi->bits_per_word = bst_len << 3;
+
+ 	return spi_setup(spi);
+}
+static int spi_read_write(struct spi_device *spi, u8 * buf, u32 len)
+{
+ struct spi_message m;
+ struct spi_transfer t;
+
+ spi_nor_setup(spi, len);
+
+ spi_message_init(&m);
+ memset(&t, 0, sizeof t);
+
+ t.tx_buf = buf;
+ t.rx_buf = buf;
+ t.len = (len + 3) / 4;
+
+ spi_message_add_tail(&t, &m);
+
+ if (spi_sync(spi, &m) != 0) {
+  printk(KERN_ERR "%s: error\n", __func__);
+  return -1;
+ }
+ return 0;
+}
 static int write_test(unsigned char *buffer, int len)
 {
 	int status;
@@ -72,11 +100,24 @@ static int read_test(unsigned char *buffer, int len)
 void ad7490_test(){
 	int i = 0;
 	for(i=0;i<100000;i++){
-		short cmd = 0x833;
-		write_test(&cmd,2);
-		short ans = 0;
-		read_test(&ans,2);
-		printk("ad value is %d\n",ans);
+		//short cmd = 0x8370;
+		//write_test(&cmd,2);
+		//short ans = 0;
+		//read_test(&ans,2);
+		//printk("ad value is %d\n",ans);
+	    u8 command[2];
+		int i,ret;
+		for (i = 0; i < 2; i++) {
+   			command[1] = 0x83 ;//add channel request to 'conctrl'
+   			command[0] = 0x70;
+   			ret = spi_read_write(my_spi, command, 2);
+   			if (ret)
+    			break;
+  		}
+		int value;
+		value = ((command[1] & 0xf) << 8) | command[0];
+		printk("ad value is %d \n",value);
+
 	}	
 }
 
